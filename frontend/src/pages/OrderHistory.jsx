@@ -33,75 +33,77 @@ const OrderHistory = () => {
     const getStatusColor = (status) => {
         switch (status) {
             case 'pending': return 'badge-warning';
-            case 'accepted': return 'badge-success'; // Using success for accepted for now
+            case 'accepted': return 'badge-success';
             case 'delivered': return 'badge-success';
             case 'cancelled': return 'badge-error';
-            default: return 'bg-gray-100 text-gray-800';
+            default: return '';
         }
     };
 
-    if (loading) return <div className="p-8 text-center">Loading orders...</div>;
+    if (loading) return <div style={{ padding: 40, textAlign: 'center' }}>Loading orders...</div>;
 
     return (
-        <div className="container py-8">
-            <h1 className="text-3xl font-bold mb-6">Order History</h1>
+        <div style={{ paddingBottom: 100 }}>
+            <header className="dashboard-header" style={{ paddingBottom: 16 }}>
+                <h1 style={{ fontSize: 24, fontWeight: 700 }}>Order History</h1>
+            </header>
 
             {orders.length === 0 ? (
-                <div className="card text-center p-12 text-text-muted">
-                    <Package size={48} className="mx-auto mb-4 opacity-50" />
-                    <p className="text-lg">No orders found.</p>
+                <div style={{ textAlign: 'center', padding: 40, color: 'var(--text-muted)' }}>
+                    <Package size={48} style={{ margin: '0 auto 16px', opacity: 0.5 }} />
+                    <p style={{ fontSize: 16 }}>No orders found.</p>
                 </div>
             ) : (
-                <div className="space-y-4">
+                <div style={{ padding: 20, display: 'grid', gap: 12 }}>
                     {orders.map((order) => (
-                        <div key={order.id} className="card p-0 overflow-hidden border border-border-color">
+                        <div key={order.id} className="card" style={{ padding: 0, overflow: 'hidden' }}>
                             {/* Order Header */}
                             <div
-                                className="p-4 flex flex-col md:flex-row md:items-center justify-between cursor-pointer hover:bg-gray-50/50 transition-colors"
+                                style={{ padding: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
                                 onClick={() => toggleOrder(order.id)}
                             >
-                                <div className="flex items-center gap-4 mb-2 md:mb-0">
-                                    <div className="bg-primary/10 p-2 rounded-lg text-primary">
-                                        <Package size={24} />
+                                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                                    <div style={{ background: '#f1f5f9', padding: 8, borderRadius: 8, color: 'var(--primary)' }}>
+                                        <Package size={20} />
                                     </div>
                                     <div>
-                                        <div className="font-bold text-lg">Order #{order.id}</div>
-                                        <div className="text-sm text-text-muted flex items-center gap-1">
-                                            <Calendar size={14} />
+                                        <div style={{ fontWeight: 700, fontSize: 15 }}>Order #{order.id}</div>
+                                        <div style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                            <Calendar size={12} />
                                             {new Date(order.created_at).toLocaleDateString()}
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
-                                    <span className={`badge ${getStatusColor(order.status)}`}>
-                                        {order.status}
-                                    </span>
-                                    <div className="font-bold text-lg">
-                                        ₹{parseFloat(order.total_amount).toFixed(2)}
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ fontWeight: 800, fontSize: 15 }}>₹{parseFloat(order.total_amount).toFixed(0)}</div>
+                                        <span className={`badge ${getStatusColor(order.status)}`}>
+                                            {order.status}
+                                        </span>
                                     </div>
-                                    {expandedOrder === order.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                                    {expandedOrder === order.id ? <ChevronUp size={18} color="#94a3b8" /> : <ChevronDown size={18} color="#94a3b8" />}
                                 </div>
                             </div>
 
                             {/* Order Details (Collapsible) */}
                             {expandedOrder === order.id && (
-                                <div className="bg-gray-50/50 border-t border-border-color p-4 animate-fade-in">
-                                    <h4 className="font-bold text-sm mb-3 uppercase tracking-wider text-text-muted">Order Items</h4>
-                                    <div className="space-y-2">
+                                <div style={{ background: '#f8fafc', borderTop: '1px solid var(--border-color)', padding: 16 }}>
+                                    <h4 style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 12, letterSpacing: 0.5 }}>Items</h4>
+                                    <div style={{ display: 'grid', gap: 8 }}>
                                         {order.items.map((item) => (
-                                            <div key={item.id} className="flex justify-between items-center text-sm">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-medium">{item.product_name}</span>
-                                                    <span className="text-text-muted">x {item.quantity}</span>
+                                            <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13 }}>
+                                                <div>
+                                                    <span style={{ fontWeight: 500 }}>{item.product_name}</span>
+                                                    <span style={{ color: 'var(--text-muted)', marginLeft: 8 }}>x {item.quantity}</span>
                                                 </div>
-                                                <div className="font-mono">
+                                                <div style={{ fontFamily: 'monospace' }}>
                                                     ₹{(parseFloat(item.price) * item.quantity).toFixed(2)}
                                                 </div>
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="mt-4 pt-3 border-t border-border-color flex justify-between font-bold">
+                                    <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', fontWeight: 800 }}>
                                         <span>Total</span>
                                         <span>₹{parseFloat(order.total_amount).toFixed(2)}</span>
                                     </div>
