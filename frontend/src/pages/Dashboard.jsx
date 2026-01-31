@@ -5,51 +5,46 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="p-6">
-            {/* Header */}
-            <header className="mb-8 pt-4">
-                <h1 className="text-3xl font-extrabold text-gray-900">Good Morning,</h1>
-                <p className="text-lg text-gray-500">Ready to restock your shop?</p>
+        <div>
+            <header className="dashboard-header">
+                <h1 className="greet-text">Good Morning,</h1>
+                <p className="sub-greet">Ready to restock your shop?</p>
             </header>
 
-            {/* Quick Actions */}
-            <div className="grid grid-cols-2 gap-4 mb-8">
+            <div className="quick-actions">
                 <div
                     onClick={() => navigate('/new-order')}
-                    className="bg-primary text-white p-6 rounded-2xl shadow-lg shadow-indigo-200 cursor-pointer hover:scale-[1.02] transition-transform active:scale-95 flex flex-col justify-between h-40"
+                    className="action-card action-primary"
                 >
-                    <div className="bg-white/20 w-10 h-10 rounded-full flex items-center justify-center mb-4">
-                        <PlusCircle size={20} />
+                    <div style={{ background: 'rgba(255,255,255,0.2)', width: 40, height: 40, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <PlusCircle size={24} color="white" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold">New Order</h3>
-                        <p className="text-sm opacity-90">Browse catalog</p>
+                        <h3 style={{ fontSize: 18, fontWeight: 700 }}>New Order</h3>
+                        <p style={{ fontSize: 13, opacity: 0.9 }}>Browse catalog</p>
                     </div>
                 </div>
 
                 <div
                     onClick={() => navigate('/orders')}
-                    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 cursor-pointer hover:scale-[1.02] transition-transform active:scale-95 flex flex-col justify-between h-40"
+                    className="action-card action-secondary"
                 >
-                    <div className="bg-orange-100 text-orange-600 w-10 h-10 rounded-full flex items-center justify-center mb-4">
-                        <ShoppingBag size={20} />
+                    <div style={{ background: '#fff7ed', width: 40, height: 40, borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ShoppingBag size={24} color="#ea580c" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-gray-900">History</h3>
-                        <p className="text-sm text-gray-500">Track orders</p>
+                        <h3 style={{ fontSize: 18, fontWeight: 700 }}>History</h3>
+                        <p style={{ fontSize: 13, color: 'var(--text-muted)' }}>Track orders</p>
                     </div>
                 </div>
             </div>
 
-            {/* Recent Activity / Banners */}
-            <div className="space-y-4">
-                <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl p-6 text-white shadow-lg">
-                    <h3 className="font-bold text-xl mb-1">Weekly Offer</h3>
-                    <p className="opacity-90 text-sm mb-4">Get 5% off on bulk sugar orders this week!</p>
-                    <button className="bg-white text-primary px-4 py-2 rounded-lg text-sm font-bold shadow-md active:opacity-90">
-                        View Offer
-                    </button>
-                </div>
+            <div className="promo-banner">
+                <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 4 }}>Weekly Offer</h3>
+                <p style={{ opacity: 0.9, fontSize: 14, marginBottom: 16 }}>Get 5% off on bulk sugar orders this week!</p>
+                <button style={{ background: 'white', color: '#7c3aed', padding: '8px 16px', borderRadius: 8, fontWeight: 700, fontSize: 13 }}>
+                    View Offer
+                </button>
             </div>
         </div>
     );
