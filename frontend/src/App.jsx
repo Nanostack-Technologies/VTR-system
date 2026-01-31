@@ -1,9 +1,12 @@
+
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import OrderHistory from './pages/OrderHistory';
 import NewOrder from './pages/NewOrder';
 import Profile from './pages/Profile';
+import ManageProducts from './pages/ManageProducts';
+import DistributorOrders from './pages/DistributorOrders';
 import BottomNav from './components/BottomNav';
 
 const Layout = ({ children }) => {
@@ -34,6 +37,8 @@ function App() {
           <Route path="/new-order" element={<PrivateRoute><NewOrder /></PrivateRoute>} />
           <Route path="/orders" element={<PrivateRoute><OrderHistory /></PrivateRoute>} />
           <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+          <Route path="/manage-products" element={<PrivateRoute><ManageProducts /></PrivateRoute>} />
+          <Route path="/distributor-orders" element={<PrivateRoute><DistributorOrders /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </Layout>

@@ -1,15 +1,25 @@
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User, LogOut, Phone, MapPin, Shield } from 'lucide-react';
+import { fetchMe } from '../api';
 
 const Profile = () => {
     const navigate = useNavigate();
-    const username = "Retailer"; // In a real app, fetch from context/local storage
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        fetchMe().then(res => setUser(res.data)).catch(console.error);
+    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user_role');
         navigate('/login');
     };
+
+    if (!user) return <div style={{ padding: 40, textAlign: 'center' }}>Loading profile...</div>;
 
     return (
         <div style={{ paddingBottom: 100 }}>
@@ -24,8 +34,8 @@ const Profile = () => {
                         <User size={30} color="var(--primary)" />
                     </div>
                     <div>
-                        <h2 style={{ fontSize: 20, fontWeight: 700 }}>{username}</h2>
-                        <p style={{ color: 'var(--text-muted)', fontSize: 14 }}>Retailer Account</p>
+                        <h2 style={{ fontSize: 20, fontWeight: 700, textTransform: 'capitalize' }}>{user.username}</h2>
+                        <p style={{ color: 'var(--text-muted)', fontSize: 14, textTransform: 'capitalize' }}>{user.role} Account</p>
                     </div>
                 </div>
 
@@ -35,7 +45,7 @@ const Profile = () => {
                         <Phone size={20} color="var(--text-muted)" />
                         <div style={{ flex: 1 }}>
                             <div style={{ fontWeight: 600 }}>Support</div>
-                            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Contact your distributor</div>
+                            <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Contact your {user.role === 'retailer' ? 'distributor' : 'admin'}</div>
                         </div>
                     </div>
 

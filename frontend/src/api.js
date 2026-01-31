@@ -36,8 +36,13 @@ export const login = async (username, password) => {
     return response.data;
 };
 
+export const fetchMe = () => api.get('users/me/');
 export const fetchProducts = () => api.get('products/');
+export const createProduct = (data) => api.post('products/', data);
+export const updateProduct = (id, data) => api.patch(`products/${id}/`, data);
+export const deleteProduct = (id) => api.delete(`products/${id}/`);
 export const fetchOrders = () => api.get('orders/');
+export const updateOrder = (id, data) => api.patch(`orders/${id}/`, data);
 export const createOrder = (orderData) => api.post('orders/', orderData);
 export const fetchPrices = () => api.get('prices/');
 
