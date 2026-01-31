@@ -16,6 +16,19 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
+// Add interceptor to handle 401s
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export const login = async (username, password) => {
     const response = await api.post('token/', { username, password });
     localStorage.setItem('access_token', response.data.access);
