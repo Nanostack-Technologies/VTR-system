@@ -9,6 +9,23 @@ from api.models import User, Product, RetailerProductPrice
 def run():
     print("Seeding database...")
     
+    # Create Superuser (Admin)
+    admin, created = User.objects.get_or_create(
+        username='admin',
+        defaults={
+            'email': 'admin@example.com',
+            'is_staff': True,
+            'is_superuser': True,
+            'role': 'distributor'  # Can manage everything
+        }
+    )
+    if created:
+        admin.set_password('admin')
+        admin.save()
+        print(f"Created Superuser: {admin.username} / admin")
+    else:
+        print("Superuser already exists.")
+    
     # Create Distributor
     dist, created = User.objects.get_or_create(username='distributor', defaults={'email': 'dist@example.com', 'role': 'distributor'})
     if created:
